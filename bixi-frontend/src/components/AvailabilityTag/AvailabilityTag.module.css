@@ -1,17 +1,17 @@
 .available {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  background-color: #e3f3b9;
+  color: #115a52;
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
 .unavailable {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  background-color: #fde6e5;
+  color: #952927;
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
