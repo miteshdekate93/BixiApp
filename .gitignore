@@ -54,6 +54,7 @@ appsettings.Development.json
 # ─── IDEs & Editors ──────────────────────────────────────────────────────────
 # JetBrains (Rider, WebStorm, etc.)
 .idea/
+**/.idea/
 *.iml
 *.iws
 *.ipr
