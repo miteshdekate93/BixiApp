@@ -1,16 +1,24 @@
+import { useEffect, useRef, useState } from 'react';
 import styles from './FilterPanel.module.css';
 
 interface Props {
-  maxDistance: number | undefined;
   onChange: (value: number | undefined) => void;
 }
 
-/**
- * Distance filter input.
- * Calls onChange(undefined) when the field is cleared, and onChange(number)
- * when a valid positive number is entered.
- */
-export function FilterPanel({ maxDistance, onChange }: Props) {
+// Debounce lives here (UI concern) so the hook stays simple.
+// The input uses local state, so the displayed value updates on every keystroke
+// while onChange only fires 1000ms after the user stops typing.
+export function FilterPanel({ onChange }: Props) {
+  const [inputValue, setInputValue] = useState('');
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clean up the timer on unmount to avoid calling onChange after unmount.
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, []);
+
   return (
     <div className={styles.panel}>
       <label htmlFor="maxDistance" className={styles.label}>
@@ -21,12 +29,15 @@ export function FilterPanel({ maxDistance, onChange }: Props) {
         type="number"
         min={1}
         className={styles.input}
-        value={maxDistance ?? ''}
+        value={inputValue}
         placeholder="No limit"
         onChange={(e) => {
           const raw = e.target.value;
-          // Empty string → remove the filter entirely
-          onChange(raw === '' ? undefined : Number(raw));
+          setInputValue(raw);
+          if (debounceTimer.current) clearTimeout(debounceTimer.current);
+          debounceTimer.current = setTimeout(() => {
+            onChange(raw === '' ? undefined : Number(raw));
+          }, 1000);
         }}
       />
     </div>
